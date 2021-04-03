@@ -1,0 +1,34 @@
+input[type="checkbox"]{
+	width: 20px; /*Desired width*/
+	height: 20px; /*Desired height*/
+}
+.pointer{
+	cursor: pointer;
+}
+.flag{
+	width: 30px;
+	padding-bottom: 10px;
+}
+th{
+	background-color: #a0a0a0;
+}
+legend {
+	font-weight: bold;
+	display: block;
+	width: 100%;
+	padding: 0;
+	font-size: 25px;
+	line-height: inherit;
+	color: #337ab7;
+	border: 0;
+	text-align: center;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.19);
+}
+
+.center{
+	margin: auto; display: block;
+}
+
+.pull-left{
+	float: left;
+}

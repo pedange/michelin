@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<!-- BOOTSTRAP & Jquery-->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+	<!-- FONT AWESOME -->
+	<script src="https://use.fontawesome.com/2862c27729.js"></script>
+
+	<link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+	<link href="css/michelin.css" rel="stylesheet">
+	<link rel="icon" type="image/png" sizes="16x16" href="https://api.viamichelin.fr/wp-content/themes/object23-mtp/assets/img/favicons/favicon-16x16.png">
+
+	<script src="JS/common.js" type="text/javascript"></script>
+
+	<script>
+		let apiKey = localStorage.getItem('michelinApiKey');
+		if (!apiKey || !checkApiKey(apiKey)) {
+			location.href='/michelin';
+		}
+	</script>
+	<script src="JS/generationTableau.js" type="text/javascript"></script>
+	<script src="JS/generationFormulaire.js" type="text/javascript"></script>
+
+
+	<title>Guide Michelin</title>
+</head>
+<body >
+	<!-- NAV BAR -->
+	<nav class="navbar fixed-top" style="background: black; width: 100%;height: 50px">
+		<table border="0" style="width: 100%">
+			<tr>
+				<td style="width: 10%">
+					<a class="navbar-brand pull-left" href="http://dev.viamichelin.fr/guide-hotels-restaurant-rest.html" target="_blank" data-toggle="tooltip" data-placement="right" title="REST API DESCRIPTION">
+						<i class="fa fa-wrench" aria-hidden="true"></i>
+					</a>
+				</td>
+				<td style="width: 80%; text-align: center;" >
+					<span style="color: white; font-size: 25px;font-family: 'Ubuntu', sans-serif;">RECHERCHE DE RESTAURANTS VIA GUIDE MICHELIN</span>
+				</td>
+				<td style="width: 10%">
+					<a href="https://restaurant.michelin.fr/restaurants/france" target="_blank" data-toggle="tooltip" data-placement="left" title="GUIDE MICHELIN RESTAURANT FRANCE" class="navbar-brand pull-right" >
+						<i class="fa fa-external-link" aria-hidden="true"></i>
+						<i class="fa fa-cutlery" aria-hidden="true"></i>
+					</a>
+				</td>
+			</tr>
+		</table>
+	</nav>
+	<div style="text-align: center">
+		<form id="idFormulaire" action="javascript:return false;" style="margin-bottom: 50px;margin-top: 50px">
+
+			<!-- FORMULAIRE -->
+			<br><br>
+			<!-- NOMBRE ETOILES -->
+			<legend >Nombre d'étoiles Michelin
+				<span style="font-size: 15px">
+					(
+					<a class="pointer" onclick="javascript:checkUncheckAllCheckBoxes('michelin_stars',true)">TOUS</a> /
+					<a class="pointer" onclick="javascript:checkUncheckAllCheckBoxes('michelin_stars',false)"> AUCUN</a>
+					)
+				</span>
+			</legend>
+			<div class="form-group">
+				<div class="form-check form-check-inline">
+					<input class="form-check-input" type="checkbox" name="michelin_stars" id="stars_0" value="0">
+					<label class="form-check-label" for="stars_0" data-toggle="tooltip" data-placement="top" title="Aucune étoile">
+						<i class="fa fa-star-o fa-2x" aria-hidden="true" name="noStar"></i>
+					</label>
+				</div>
+				<div class="form-check form-check-inline">
+					<input class="form-check-input" type="checkbox" name="michelin_stars" id="stars_1" value="1">
+					<label class="form-check-label" for="stars_1" data-toggle="tooltip" data-placement="top" title="Une étoile">
+						<i class="fa fa-star fa-2x" aria-hidden="true" name="oneStar"></i>
+					</label>
+				</div>
+				<div class="form-check form-check-inline">
+					<input class="form-check-input" type="checkbox" name="michelin_stars" id="stars_2" value="2">
+					<label class="form-check-label" for="stars_2" data-toggle="tooltip" data-placement="top" title="Deux étoiles">
+						<i class="fa fa-star fa-2x" aria-hidden="true" name="twoStar"></i>
+						<i class="fa fa-star fa-2x" aria-hidden="true" name="twoStar"></i>
+					</label>
+				</div>
+				<div class="form-check form-check-inline">
+					<input class="form-check-input" type="checkbox" name="michelin_stars" id="stars_3" value="3">
+					<label class="form-check-label" for="stars_3" data-toggle="tooltip" data-placement="top" title="Trois étoiles">
+						<i class="fa fa-star fa-2x" aria-hidden="true" name="threeStar"></i>
+						<i class="fa fa-star fa-2x" aria-hidden="true" name="threeStar"></i>
+						<i class="fa fa-star fa-2x" aria-hidden="true" name="threeStar"></i>
+					</label>
+				</div>
+			</div>
+
+			<br><br>
+			<!-- CHAMPS A AFFICHER -->
+			<legend >Liste des champs à afficher
+				<span style="font-size: 15px">
+					(
+					<a class="pointer" onclick="javascript:checkUncheckAllCheckBoxes('fields',true)">TOUS</a> /
+					<a class="pointer" onclick="javascript:checkUncheckAllCheckBoxes('fields',false)"> AUCUN</a>
+					)
+				</span>
+			</legend>
+			<!-- FIELDS TO DISPLAY -->
+			<div id="fieldList" class="form-inline justify-content-center" style="width: 80%; margin: auto;">
+				<!-- generateFieldCheckBoxList() -->
+			</div>
+
+			<br><br>
+			<!-- LISTE DES PAYS A PARCOURIR -->
+			<legend >Liste des pays à parcourir 
+				<span style="font-size: 15px">
+					(
+					<a class="pointer" onclick="javascript:checkUncheckAllCheckBoxes('countries',true)">TOUS</a> /
+					<a class="pointer" onclick="javascript:checkUncheckAllCheckBoxes('countries',false)"> AUCUN</a>
+					)
+				</span>
+			</legend>
+
+			<!-- COUNTRIES CHECKBOX -->
+			<div id="countryList"  style="width: 80%; margin: auto;">
+				<span>Pays de l'UE :</span><br><br>
+				<div id="countryListEU" class="form-inline justify-content-center"><!-- generateCountryCheckBoxList("UE") --></div><br>
+				<span>Autres pays :</span><br><br>
+				<div id="countryListOTHER" class="form-inline justify-content-center"><!-- generateCountryCheckBoxList("OTHER") --></div>
+			</div>
+
+
+			<!-- BUTTON VALIDER -->
+			<br><br>
+			<button id="idButtonGenerer" onclick="javascript:generateTable()" class="btn btn-primary" style="width: 50%; height: 75px; font-size: 30px; border-color: black">
+				<i class="fa fa-table" aria-hidden="true"></i>
+				Generer le tableau
+				<i class="fa fa-table" aria-hidden="true"></i>
+				<br>
+			</button>
+			<button id="idButtonTelecharger" onclick="javascript:downloadData()"  class="btn btn-primary" style="width: 50%; height: 75px; font-size: 30px; border-color: black">
+				<i class="fa fa-table" aria-hidden="true"></i>
+				Télécharger les données
+				<i class="fa fa-table" aria-hidden="true"></i>
+				<br>
+			</button>
+
+			<br><br>
+			<!-- BUTTON RESET -->
+			<input type="reset"  id="idButtonReset" class="btn btn-default" style="width: 10%; height: 50px; ">
+			<br>
+		</input>
+		<br>
+		
+	</form>
+</div>
+<!-- PLEASE WAIT -->
+<center>
+	<span id="idPleaseWait" hidden="" style="margin-bottom: 50px;margin-top: 50px">
+		<br><br><br><br><br>
+		<i class="fa fa-refresh fa-spin fa-5x fa-fw"></i><br>
+		<span>Traitement en cours... </span><br>
+	</span>
+	<center>
+
+		<!-- TABLEAU DES RESULTATS -->
+		<span id="idAllTables" hidden="" >
+			<table class="table fixed-top" style="margin-top: 50px; background-color: white">
+				<tr>
+					<td colspan="100%" style="text-align: center;">
+						<!-- RETOUR AU FORMULAIRE -->
+						<a href="" class="pull-left btn btn-primary" style="width: 30%;">
+							<i class="fa fa-chevron-circle-left" aria-hidden="true"></i> Retour au formulaire
+						</a>
+						<span style="width: 40%; font-size: 25px">
+							<b>Résultats de la recherche</b> 
+						</span>
+						<!-- COPIER LE TABLEAU -->
+						<a onclick="javascript:CopySelectionToClipBoard('myTable')" class="pull-right btn btn-primary" style="width: 30%; color: white!important">
+							<i class="fa fa-files-o" aria-hidden="true"></i> Copier le tableau
+						</a>
+					</td>
+				</tr>
+			</table>
+			<table id="myTable" border="1" class="table" style="margin-top: 110px;margin-bottom: 50px;">
+				<tr hidden=""></tr>
+			</table>
+			<div id="noResults" class="center" style="display: none">Aucun restaurant trouvé !</div>
+		</span>
+		<!-- FOOTER -->
+		<footer class="fixed-bottom" style="background: black; width: 100%;height: 50px">
+			<!--Site web by Paul EDANGE-->
+			<div style="padding-top: 15px">
+				<table style="width:100%" border="0">
+					<tr style="width:100%; text-align: center;">
+						<td style="width:20%">
+							<span style="color: #337ab7" class="pull-left">V5</span>
+						</td>
+						<td style="width:60%">
+							<a href="https://www.linkedin.com/in/paul-edange-159a69a9"  onClick="MyWindow = window.open('https://www.linkedin.com/in/paul-edange-159a69a9', 'MyWindow'); return false;" style="width: 80%">
+								<i class="fa fa-laptop" aria-hidden="true"></i>
+								Created by P.Edange
+								<i class="fa fa-laptop" aria-hidden="true"></i>
+							</a>
+						</td>
+						<td style="width:20%">
+							<a class="pull-right pointer" onclick="javascript:afficherContactCoords()">Questions &amp; Support&nbsp;</a>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</footer>
+	</body>
+	</html>
+
